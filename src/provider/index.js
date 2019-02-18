@@ -9,8 +9,12 @@ export default class index extends React.Component {
       currentlyReading: [],
       wantToRead: [],
       read: [],
-      addBooks: books => {
-        
+      addBooks: allBooks => {
+        const currentlyReading = allBooks.filter(book => book.shelf === 'currentlyReading');
+        const read = allBooks.filter(book => book.shelf === 'read');
+        const wantToRead = allBooks.filter(book => book.shelf === 'wantToRead');
+
+        this.setState({allBooks, currentlyReading, read, wantToRead})
       }
      }
   }

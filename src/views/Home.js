@@ -10,12 +10,7 @@ class Home extends React.Component {
   async componentDidMount() {
     try {
       const allBooks = await getAll();
-      const currentlyReading = allBooks.filter(book => book.shelf === 'currentlyReading');
-      const read = allBooks.filter(book => book.shelf === 'read');
-      const wantToRead = allBooks.filter(book => book.shelf === 'wantToRead');
-      console.log(currentlyReading);
-      console.log(read);
-      console.log(wantToRead);
+      this.props.addBooks(allBooks);
     }catch(err){
       console.log(err);
     }
@@ -28,9 +23,9 @@ class Home extends React.Component {
               <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
-              <Shelf title="Currently Reading" />
-              <Shelf title="Wants to Read" />
-              <Shelf title="Read" />
+              <Shelf title="Currently Reading" books={this.props.currentlyReading} />
+              <Shelf title="Want to Read" books={this.props.wantToRead} />
+              <Shelf title="Read" books={this.props.read} />
             </div>
             <SearchBookButton/>
           </div>
