@@ -1,9 +1,19 @@
 import React from 'react';
+import Book from "./Book";
 
 class Shelf extends React.Component {
   state = {  }
   render() { 
-    return ( <div> Shelf component </div> );
+    return ( 
+      <div className="bookshelf">
+        <h2 className="bookshelf-title">{this.props.title}</h2>
+        <div className="bookshelf-books">
+          <ol className="books-grid">
+            <Book />
+          </ol>
+        </div>
+      </div>
+    );
   }
 }
  
