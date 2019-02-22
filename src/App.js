@@ -7,29 +7,24 @@ import Provider, { BooksContext } from "./provider/books"
 
 import './App.css'
 
-class BooksApp extends React.Component {
-  state = {  }
-
-  render() {
-    return (
-      <div className="app">
-      <Provider>
-      <Switch>
-        <Route exact path={"/"} render={() => (
-          <BooksContext.Consumer>
-            {context => <Home {...context} />}
-          </BooksContext.Consumer>
-        )} />
-        <Route exact path={"/search"} render={() => (
-          <BooksContext.Consumer>
-            {context => <Search {...context} />}
-          </BooksContext.Consumer>
-        )} />
-      </Switch>
-      </Provider>
-      </div>
-    )
-  }
-}
+const BooksApp = props => 
+  (
+    <div className="app">
+    <Provider>
+    <Switch>
+      <Route exact path={"/"} render={() => (
+        <BooksContext.Consumer>
+          {context => <Home {...context} />}
+        </BooksContext.Consumer>
+      )} />
+      <Route exact path={"/search"} render={() => (
+        <BooksContext.Consumer>
+          {context => <Search {...context} />}
+        </BooksContext.Consumer>
+      )} />
+    </Switch>
+    </Provider>
+    </div>
+  )
 
 export default BooksApp
