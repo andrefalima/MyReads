@@ -16,17 +16,15 @@ class Search extends React.Component {
     this.setState({ query: query });
 
     if(query) {
-      search(query).then(books => {
-        if(books.length > 0) {
-          this.setState({ books: books })
-        }else {
-          this.setState({ books: 'No books found '})
-        }
+      search(query)
+        .then(books => {
+        books.length > 0
+        ? this.setState({ books: books })
+        : this.setState({ books: []})
+        }).catch(err => {
+        console.log(err);
       });
     }
-
-    console.log(this.state.books);
-
   }
 
   render() {
@@ -57,7 +55,14 @@ class Search extends React.Component {
       { this.state.books.length > 0 && (
         <div>
           <h2> There are { this.state.books.length } results...</h2>
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+            { this.state.books.map(book => <Book key={book.id} {...book} changeBookShelf={this.props.changeBookShelf} />)}
+          </ol>
+        </div>
+      )}
+      { this.state.books.length <= 0 && (
+        <div>
+          <h2>No books found, please try again...</h2>
         </div>
       )}
     </div>
