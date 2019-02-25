@@ -1,12 +1,45 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom'
+
+import Book from '../components/Book';
+import { search } from '../BooksAPI';
 
 class Search extends React.Component {
-  state = {  }
-  render() { 
+  state = {
+    goBack: false,
+    query: '',
+    books: []
+  }
+
+  fetchBooks = event => {
+    const query = event.target.value;
+    this.setState({ query: query });
+
+    if(query) {
+      search(query).then(books => {
+        if(books.length > 0) {
+          this.setState({ books: books })
+        }else {
+          this.setState({ books: 'No books found '})
+        }
+      });
+    }
+
+    console.log(this.state.books);
+
+  }
+
+  render() {
+    const { query } = this.state;
+
+    if(this.state.goBack) {
+      this.setState({ goBack: false });
+      return <Redirect to='/' />
+    }
     return ( 
     <div className="search-books">
     <div className="search-books-bar">
-      <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
+      <a className="close-search" onClick={() => this.setState({ goBack: true })}>Close</a>
       <div className="search-books-input-wrapper">
         {/*
           NOTES: The search from BooksAPI is limited to a particular set of search terms.
@@ -16,12 +49,17 @@ class Search extends React.Component {
           However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
           you don't find a specific author or title. Every search is limited by search terms.
         */}
-        <input type="text" placeholder="Search by title or author"/>
+        <input type="text" placeholder="Search by title or author" value={query} onChange={this.fetchBooks} />
 
       </div>
     </div>
     <div className="search-books-results">
-      <ol className="books-grid"></ol>
+      { this.state.books.length > 0 && (
+        <div>
+          <h2> There are { this.state.books.length } results...</h2>
+          <ol className="books-grid"></ol>
+        </div>
+      )}
     </div>
   </div>
    );
