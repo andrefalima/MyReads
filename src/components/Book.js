@@ -4,20 +4,23 @@ import { update } from '../BooksAPI';
 class Book extends React.Component {
   state = {  }
   shelfChange = async toShelf => {
-    const book = this.props;
-    const shelf = toShelf.target.value;
-    update(book, shelf)
-      .then(this.props.changeBookShelf(book, shelf))
-      .catch(err => console.log(err));
+    try {
+      const book = this.props;
+      const shelf = toShelf.target.value;
+      const status = await update(book, shelf);
+      this.props.changeBookShelf(book, shelf, status);
+    } catch (err) {
+      console.log(err);
+    }
   }
-  render() { 
-    return ( 
+  render() {
+    return (
     <li>
       <div className="book">
         <div className="book-top">
           <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.imageLinks.thumbnail})` }}></div>
           <div className="book-shelf-changer">
-            <select onChange={this.shelfChange}>
+            <select onChange={this.shelfChange} value={this.props.shelf}>
               <option value="move" disabled>Move to...</option>
               <option hidden value=''></option>
               <option value="currentlyReading">Currently Reading</option>
@@ -34,5 +37,5 @@ class Book extends React.Component {
     );
   }
 }
- 
+
 export default Book;

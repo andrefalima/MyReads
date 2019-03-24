@@ -5,7 +5,7 @@ export const BooksContext = React.createContext();
 export default class index extends React.Component {
   constructor() {
     super();
-    this.state = { 
+    this.state = {
       books: [],
       currentlyReading: [],
       wantToRead: [],
@@ -16,12 +16,21 @@ export default class index extends React.Component {
         const wantToRead = books.filter(book =>book.shelf === 'wantToRead');
         this.setState({ books, currentlyReading, wantToRead, read })
       },
-      changeBookShelf: (book, bookShelf) => {
-        console.log('changeBookShelf', book, bookShelf);
+      changeBookShelf: (book, bookShelf, status) => {
+        const newStatus = this.state.books.map( books => {
+          const IDs = status[bookShelf].find(
+            bookId => bookId === books.id
+          );
+          if(IDs) {
+            books.shelf = bookShelf
+          }
+          return books;
+        });
+        this.state.addBooks(newStatus);
       }
-     }
+    }
   }
-  render() { 
+  render() {
     return (
       <BooksContext.Provider value={{...this.state}} >
         {this.props.children}
@@ -29,4 +38,3 @@ export default class index extends React.Component {
     )
   }
 }
- 
