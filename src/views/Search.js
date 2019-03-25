@@ -16,7 +16,10 @@ class Search extends React.Component {
     this.setState({ query: query });
 
     if(query) {
-      search(query)
+      if(query.length <= 0) {
+        this.setState({ books: []})
+      } else {
+        search(query)
         .then(books => {
         books.length > 0
         ? this.setState({ books: books })
@@ -24,6 +27,7 @@ class Search extends React.Component {
         }).catch(err => {
         console.log(err);
       });
+      }
     }
   }
 
@@ -34,7 +38,7 @@ class Search extends React.Component {
       this.setState({ goBack: false });
       return <Redirect to='/' />
     }
-    return ( 
+    return (
     <div className="search-books">
     <div className="search-books-bar">
       <a className="close-search" onClick={() => this.setState({ goBack: true })}>Close</a>
@@ -52,7 +56,7 @@ class Search extends React.Component {
       </div>
     </div>
     <div className="search-books-results">
-      { this.state.books.length > 0 && (
+      { this.state.books.length >= 1 && (
         <div>
           <h2> There are { this.state.books.length } results...</h2>
           <ol className="books-grid">
@@ -70,5 +74,5 @@ class Search extends React.Component {
    );
   }
 }
- 
+
 export default Search;
